@@ -1,0 +1,9 @@
+enabled: false
+tecart_url: 'https://domain.tecartcrm.de'
+tecart_session_api: 'rest_v2/index.php/5.4.68/session'
+proxy_ip: null
+proxy_port: null
+group_administrator: '4,6'
+group_editor: '9'
+group_developer: '22'
+

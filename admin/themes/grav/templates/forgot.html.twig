@@ -1,0 +1,17 @@
+{% embed 'partials/login.html.twig' with {title:'Grav Forgot Password'} %}
+
+    {% block form %}
+        {% for field in form.fields %}
+            {% if field.type %}
+                <div>
+                    {{ 'PLUGIN_TECART_SESSION_LOGIN.TEXT_FORGOT_PAGE'|tu }}<br /><br />
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="form-actions primary-accent">
+            <a class="button secondary" href="{{ admin_route('/login') }}"><i class="fa fa-sign-in"></i> {{ 'PLUGIN_ADMIN.LOGIN_BTN'|tu }}</a>
+        </div>
+    {% endblock %}
+
+{% endembed %}
+

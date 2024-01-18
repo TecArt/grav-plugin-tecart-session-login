@@ -1,0 +1,71 @@
+name: TecArt Session Login
+version: 0.1.0
+description: Login as TecArt User via TecArt Session API Authentication
+icon: sign-in
+author:
+    name: TecArt GmbH - https://www.tecart.de | Christiana Holland-Jobb
+    email: christiana.holland-jobb@tecart.de
+homepage: https://github.com/TecArt/grav-plugin-tecart-session-login
+keywords: grav, plugin, login, tecart, api, session, curl, authentication
+license: MIT
+
+dependencies:
+  - { name: grav, version: '>=1.7.23' }
+  - { name: login, version: '>=3.5.6' }
+  - { name: admin, version: '>=1.10.23' }
+
+form:
+  validation: strict
+  fields:
+    enabled:
+      type: toggle
+      label: Plugin Status
+      highlight: 1
+      default: 1
+      options:
+        1: Enabled
+        0: Disabled
+      validate:
+        type: bool
+    tecart_url:
+      type: text
+      label: TecArt URL
+      placeholder: e.g. https://domain.tecart.de
+      help: URL to TecArt CRM that contains the users
+      validate:
+        type: text
+        required: true
+    tecart_session_api:
+      type: text
+      label: TecArt Api Path
+      placeholder: e.g. rest_v2/index.php/5.4.68/session";
+      validate:
+        type: text
+        required: true
+    proxy_ip:
+      type: text
+      label: Proxy IP (optional)
+    proxy_port:
+      type: text
+      label: Proxy Port (optional)
+    group_administrator:
+      type: text
+      label: Adminsitrator - TecArt User Group IDs
+      placeholder: e.g. 1,2,3
+      help: TecArt users will belong to group Administrator in Grav admin panel
+      validate:
+        type: text
+    group_editor:
+      type: text
+      label: Editor - TecArt User Group IDs
+      placeholder: e.g. 1,2,3
+      help: TecArt users will belong to group Editor in Grav admin panel
+      validate:
+        type: text
+    group_developer:
+      type: text
+      label: Developer - TecArt User Group IDs
+      placeholder: e.g. 1,2,3
+      help: TecArt users will belong to group Developer in Grav admin panel
+      validate:
+        type: text
