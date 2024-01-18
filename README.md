@@ -27,9 +27,9 @@ You should now have all the plugin files under
 
 > NOTE: This plugin is a modular component for [Grav CMS](http://github.com/getgrav/grav) and requires other plugins to operate:
 
-    - { name: grav, version: '>=1.7.7' }
-    - { name: login, version: '>=3.4.1' }
-    - { name: admin, version: '>=1.10.6' }
+    - { name: grav, version: '>=1.7.23' }
+    - { name: login, version: '>=3.5.3' }
+    - { name: admin, version: '>=1.10.23' }
 
 ### Admin Plugin
 
