@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/git-plugin-tecart-session-login.iml" filepath="$PROJECT_DIR$/.idea/git-plugin-tecart-session-login.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../grav-plugin-tecart-session-login/.idea/grav-plugin-tecart-session-login.iml" filepath="$PROJECT_DIR$/../grav-plugin-tecart-session-login/.idea/grav-plugin-tecart-session-login.iml" />
     </modules>
   </component>
 </project>
