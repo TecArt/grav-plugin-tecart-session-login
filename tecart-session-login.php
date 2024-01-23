@@ -115,6 +115,8 @@ class TecartSessionLoginPlugin extends Plugin
             // Create Grav User (no saving at this point - just serve user infos to make grav admin work)
             $grav_user = $this->createTecartGravUser($username, $sessionData);
 
+            $grav_user->save();
+
             // Login
             $event->setUser($grav_user);
 
@@ -238,29 +240,32 @@ class TecartSessionLoginPlugin extends Plugin
 
         // Default permissions
         $permissions['site']['login'] = true;
-//        $permissions['admin']['login'] = true;
-//        $permissions['admin']['pages'] = true;
-//        $permissions['admin']['cache'] = true;
-//        $permissions['admin']['configuration_site'] = true;
-//        $permissions['admin']['flex-objects'] = true;
-        //admin permissions
-//        $permissions['admin']['super'] = true;
-//        $permissions['admin']['configuration'] = true;
-//        $permissions['admin']['maintenance'] = true;
-//        $permissions['admin']['statistics'] = true;
-//        $permissions['admin']['plugins'] = true;
-//        $permissions['admin']['themes'] = true;
-//        $permissions['admin']['tools'] = true;
-//        $permissions['admin']['users'] = true;
-//        $permissions['admin']['flex-objects'] = true;
-//        $permissions['admin']['tecart-references'] = true;
+        $permissions['admin']['login'] = true;
+        $permissions['admin']['pages'] = true;
 
         // Set user
+        $grav_user['state']     = 'enabled';
         $grav_user['fullname']  = $sessionData['name'] ?? $username;        //is shown in admin panel
         $grav_user['email']     = $sessionData['email_address'] ?? '';
         $grav_user['language']  = $sessionData['user_language'] ?? 'de';
         $grav_user['groups']    = $this->getUserGroups($sessionData_group_ids);
         $grav_user['access']    = $permissions;
+
+        // Get the group configuration from groups.yaml
+        $groupsConfig = $this->grav['config']->get('groups');
+
+        // Access by groups
+        if (!empty($grav_user['groups'])) {
+            // Assign permissions based on group membership
+            foreach ($grav_user['groups'] as $group) {
+                if (isset($groupsConfig[$group])) {
+                    $groupPermissions = $groupsConfig[$group]['access'];
+                    $permissions = $this->mergePermissions($permissions, $groupPermissions);
+                }
+            }
+            // Setting the permissions for the user
+            $grav_user['access'] = $permissions;
+        }
 
         return $grav_user;
     }
@@ -285,18 +290,37 @@ class TecartSessionLoginPlugin extends Plugin
         foreach ($sessionData_group_ids as $groupId) {
             if (in_array($groupId, $administratorGroupIds)) {
                 $userGroups[] = 'Administrator';
-                echo 'Administrator' . $groupId. '<br />';
             } elseif (in_array($groupId, $editorGroupIds)) {
                 $userGroups[] = 'Editor';
-                echo 'Editor' . $groupId. '<br />';
             } elseif (in_array($groupId, $developerGroupIds)) {
                 $userGroups[] = 'Developer';
-                echo 'Developer' . $groupId. '<br />';
             }
         }
 
         // Avoiding duplicate entries
         return array_unique($userGroups);
+    }
+
+    /**
+     * merge permissions to ensure there are no unwanted overlaps or duplications.
+     *
+     * @param array $existingPermissions
+     * @param array $newPermissions
+     * @return array
+     */
+    protected function mergePermissions(array $existingPermissions, array $newPermissions)
+    {
+        foreach ($newPermissions as $key => $values) {
+            if (!isset($existingPermissions[$key])) {
+                $existingPermissions[$key] = $values;
+            } else {
+                foreach ($values as $subKey => $value) {
+                    $existingPermissions[$key][$subKey] = $value;
+                }
+            }
+        }
+
+        return $existingPermissions;
     }
 
     /**
