@@ -198,12 +198,6 @@ class TecartSessionLoginPlugin extends Plugin
             curl_setopt($ch, CURLOPT_PROXYPORT, $proxy_port);
         }
 
-        // Set up the proxy if provided.
-        if (!empty($proxy_ip) && !empty($proxy_port)) {
-            curl_setopt($ch, CURLOPT_PROXY, $proxy_ip);
-            curl_setopt($ch, CURLOPT_PROXYPORT, $proxy_port);
-        }
-
         $response = curl_exec($ch);
 
         if (curl_errno($ch)) {
